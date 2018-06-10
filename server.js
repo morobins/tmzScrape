@@ -118,6 +118,20 @@ app.post("/articles/:id", function (req, res) {
     });
 });
 
+// Route for saving/updating an Article's associated Note
+app.delete("/articles/:id", function (req, res) {
+  // Create a new note and pass the req.body to the entry
+  db.Note.deleteOne(req.body)
+    .then(function (dbNote) {
+      // If we were able to successfully update an Article, send it back to the client
+      res.json(dbNote);
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function (req, res) {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
