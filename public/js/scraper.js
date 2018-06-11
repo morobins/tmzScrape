@@ -1,13 +1,16 @@
 // Grab the articles as a json
-$.getJSON("/articles", function(data) {
-  // $("#articles").empty;
-  // For each one
-  for (var i = 0; i < data.length; i++) {
-    // Display the apropos information on the page
-    $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "</p>");
-    $("#articles").append("<a target='_blank' href='" + data[i].link + "'>Click Here For The Story</a>")
-  }
-});
+$(document).on("click", ".scrape_button", function(event) {
+  event.preventDefault();
+  $.getJSON("/articles", function(data) {
+    // For each one
+    for (var i = 0; i < data.length; i++) {
+      // Display the apropos information on the page
+      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "</p>");
+      $("#articles").append("<a target='_blank' href='" + data[i].link + "'>Click Here For The Story</a>")
+    }
+  });
+}) 
+
 
 
 // Whenever someone clicks a p tag
