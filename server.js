@@ -39,6 +39,18 @@ mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
 
+FIXME:
+//Get Handlebars to work!
+// Set Handlebars.
+// var exphbs = require("express-handlebars");
+
+// app.engine("handlebars", exphbs({
+//     defaultLayout: "main",
+//     // partialsDir: path.join(__dirname, "/views/layouts/partials")
+// }));
+// app.set("view engine", "handlebars");
+
+
 app.get("/scrape", function (req, res) {
   // Make a request call to grab the HTML body from the site of your choice
   axios.get("http://www.tmz.com/").then(function (response) {
@@ -85,6 +97,35 @@ app.get("/articles", function (req, res) {
     .then(function (dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
       res.json(dbArticle);
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+
+// Route for saving an Article 
+app.post("/articles/save/:id", function (req, res) {
+  // Grab every document in the Articles collection
+  db.Article.findOneAndUpdate({_id: req.params.id}, {saved: true})
+    .then(function (savedArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(savedArticle);
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// Route for deleting an article from saved 
+app.post("/articles/save/:id", function (req, res) {
+  // Grab every document in the Articles collection
+  db.Article.findOneAndUpdate({_id: req.params.id}, {saved: false})
+    .then(function (unsaveArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(unsaveArticle);
     })
     .catch(function (err) {
       // If an error occurred, send it to the client
